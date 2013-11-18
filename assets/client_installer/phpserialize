@@ -6,12 +6,12 @@ https://github.com/sdfsdhgjkbmnmxc/phpserialize
 
 Author: Alexander Chekunkov
 Modified by: Arjen van Bochoven
-- Included error classes
-- Added support for objc.pyobjc_unicode strings
++ Included error classes
++ Added support for NSArray, NSDictionary, NSDate
 """
 from decimal import Decimal
 import string
-import objc
+from Foundation import NSArray, NSDictionary, NSDate
 
 class PhpSerializationError(ValueError):
     pass
@@ -141,34 +141,31 @@ def serialize(struct, typecast=None):
 
     struct_type = type(struct)
     # d:<float>;
-    if struct_type is float:
-        return 'd:%.20f;' % struct  # 20 digits after comma
-
-    # d:<float>;
-    if struct_type is Decimal:
+    if isinstance(struct, (float, Decimal)):
         return 'd:%.20f;' % struct  # 20 digits after comma
 
     # b:<0 or 1>;
-    if struct_type is bool:
+    if isinstance(struct, bool):
         return 'b:%d;' % int(struct)
 
     # i:<integer>;
-    if struct_type is int or struct_type is long:
+    if isinstance(struct, (int, long)):
         return 'i:%d;' % struct
 
     # s:<string_length>:"<string>";
-    if struct_type is str:
+    if isinstance(struct, (NSDate, str)):
+        struct = "%s" % struct
         return 's:%d:"%s";' % (len(struct), struct)
 
-    if struct_type is unicode:
+    if isinstance(struct, unicode):
         return serialize(struct.encode('utf-8'), typecast)
 
     # a:<hash_length>:{<key><value><key2><value2>...<keyN><valueN>}
-    if struct_type is dict:
+    if isinstance(struct, (dict, NSDictionary)):
         core = ''.join([serialize(k, typecast) + serialize(v, typecast) for k, v in struct.items()])
         return 'a:%d:{%s}' % (len(struct), core)
 
-    if struct_type is tuple or struct_type is list:
+    if isinstance(struct, (tuple, list, NSArray)):
         return serialize(dict(enumerate(struct)), typecast)
 
     if isinstance(struct, PHP_Class):
@@ -179,10 +176,7 @@ def serialize(struct, typecast=None):
             ''.join([serialize(x.php_name, typecast) + serialize(x.value, typecast) for x in struct]),
         )
 
-    if struct_type is objc.pyobjc_unicode:
-        return serialize(struct.encode('utf-8'), typecast)
-
-    raise PhpSerializationError('PHP serialize: cannot encode %r' % struct)
+    raise PhpSerializationError('PHP serialize: cannot encode %r, %r' % (struct_type, struct))
 
 
 class Unserializator(object):

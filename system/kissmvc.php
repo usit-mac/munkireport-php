@@ -72,6 +72,27 @@ class Model extends KISS_Model
     // Errors
     protected $errors = '';
 
+    // Constructor
+	function __construct( $pkname='', $tablename='', $dbhfnname='getdbh', $quote_style='MYSQL', $compress_array=true ) 
+    {
+		// Set dbh function name
+		$this->dbhfnname=$dbhfnname;
+		
+		// Set quote style dependent on driver
+		switch($this->get_driver())
+		{
+		    case 'dblib':
+		    case 'mssql':
+		    	$quote_style='MSSQL';
+		    	break;
+		    default:
+		    	$quote_style='MYSQL';
+		}    	
+
+    	parent::__construct( $pkname, $tablename, $dbhfnname, $quote_style, $compress_array); 
+
+    }
+
 
 	function save()
 	{

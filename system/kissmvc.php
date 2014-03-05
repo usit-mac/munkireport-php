@@ -146,7 +146,20 @@ class Model extends KISS_Model
      **/
     function get_driver()
     {
-    	return $this->getdbh()->getAttribute(PDO::ATTR_DRIVER_NAME);
+    	static $driver = '';
+
+    	if ( ! $driver)
+    	{
+    		$driver = $this->getdbh()->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+    		// Set driver to mssql
+    		if (in_array($driver, array('dblib', 'sybase', 'sqlsrv')))
+    		{
+    			$driver = 'mssql';
+    		}
+    	}
+
+    	return $driver;
     }
 
     /**

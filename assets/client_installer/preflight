@@ -55,7 +55,7 @@ def main():
                         % (preflightscript, stderr))
                 if result:
                     print('preflight.d/%s return code: %d'
-                                            % (preflightscript, result))
+                        % (preflightscript, result))
                     exit(-1)
 
             except utils.ScriptNotFoundError:

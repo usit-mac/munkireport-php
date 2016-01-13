@@ -390,6 +390,7 @@ function getdbh()
 	{
 			//$GLOBALS['dbh'] = new PDO( 'sqlite:'.APP_PATH.'db/dbname.sqlite' );
 			$GLOBALS['dbh'] = new PDO( 'mysql:host=localhost;dbname=dbname', 'username', 'password' );
+
 		} catch ( PDOException $e ) 
 	{
 			die( 'Connection failed: '.$e->getMessage() );
@@ -459,6 +460,9 @@ abstract class KISS_Model
 			return '`'.$name.'`';
 		elseif ( $this->QUOTE_STYLE=='MSSQL' )
 			return '['.$name.']';
+                elseif ( $this->QUOTE_STYLE=='PGSQL' )
+                        return ''.$name.'';
+
 		else
 			return '"'.$name.'"';
 	}

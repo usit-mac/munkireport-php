@@ -33,6 +33,11 @@ class Migration_munkireport_add_unique_index extends Model
 				$sql = 'DROP INDEX serial_number ON munkireport';
 
 				break;
+                        case 'pgsql':
+
+                                $sql = 'DROP INDEX serial_number';
+
+                                break;
 
 			default:
 

@@ -73,10 +73,10 @@ function getdbh()
 		try
 		{
 			$GLOBALS['dbh'] = new PDO(
-				conf('pdo_dsn'),
-				conf('pdo_user'),
-				conf('pdo_pass'),
-				conf('pdo_opts')
+				conf('pdo_dsn')
+//				conf('pdo_user'),
+//				conf('pdo_pass'),
+//				conf('pdo_opts')
 				);
 		}
 		catch (PDOException $e)

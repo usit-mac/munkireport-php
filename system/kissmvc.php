@@ -354,7 +354,7 @@ class Model extends KISS_Model
 			}
 			
 			// Set primary key
-			$columns[$this->pkname] = 'INTEGER PRIMARY KEY';
+			$columns[$this->pkname] = 'SERIAL PRIMARY KEY';
 
 			// Table options, override per driver
 			$tbl_options = '';
@@ -369,6 +369,10 @@ class Model extends KISS_Model
 					$columns[$this->pkname] .= ' AUTO_INCREMENT';
 					$tbl_options = conf('mysql_create_tbl_opts');
 					break;
+                                case 'pgsql':
+                                        $columns[$this->pkname] .= ' AUTOINCRIMENT';
+                                        break;
+
 			}
 			
 			// Compile columns sql

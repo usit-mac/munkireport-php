@@ -461,7 +461,7 @@ abstract class KISS_Model
 		elseif ( $this->QUOTE_STYLE=='MSSQL' )
 			return '['.$name.']';
                 elseif ( $this->QUOTE_STYLE=='PGSQL' )
-                        return ''.$name.'';
+                        return $name;
 
 		else
 			return '"'.$name.'"';

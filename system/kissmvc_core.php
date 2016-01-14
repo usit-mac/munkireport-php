@@ -405,11 +405,12 @@ abstract class KISS_Model
 	protected $pkname;
 	protected $tablename;
 	protected $dbhfnname;
-	protected $QUOTE_STYLE='MYSQL'; // valid types are MYSQL, MSSQL, ANSI
+//	protected $QUOTE_STYLE='MYSQL'; // valid types are MYSQL, MSSQL, ANSI
+        protected $QUOTE_STYLE='PGSQL'; // valid types PGSQL
 	protected $COMPRESS_ARRAY=true;
 	public $rs = array(); // for holding all object property variables
 
-	function __construct( $pkname='', $tablename='', $dbhfnname='getdbh', $quote_style='MYSQL', $compress_array=true ) 
+	function __construct( $pkname='', $tablename='', $dbhfnname='getdbh', $quote_style='PGSQL', $compress_array=true ) 
 	{
 		$this->pkname=$pkname; //Name of auto-incremented Primary Key
 		$this->tablename=$tablename; //Corresponding table in database

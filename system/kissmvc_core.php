@@ -311,6 +311,7 @@ abstract class KISS_View
 		if (is_array($vars))
 			$this->vars=array_merge($this->vars,$vars);
 		extract($this->vars);
+
 		if ((bool) @ini_get('short_open_tag') === FALSE)
 		{
 			echo eval($this->short_open($view_path.$file.EXT));

@@ -299,7 +299,7 @@ class Model extends KISS_Model
 	{
 		// Check if we instantiated this table before
 		if(isset($GLOBALS['tables'][$this->tablename]))
-		{
+		{		
 			return TRUE;
 		}
 

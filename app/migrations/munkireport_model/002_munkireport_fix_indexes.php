@@ -77,6 +77,13 @@ class Migration_munkireport_fix_indexes extends Model
 
 				break;
 
+                        case 'pgsql':
+
+                                // In PGSQL use 'IF NOT EXISTS'
+                                $sql = 'CREATE INDEX IF NOT EXISTS %s ON %s (%s)';
+
+                                break;
+
 			default:
 
 				throw new Exception("UNKNOWN DRIVER", 1);

@@ -485,7 +485,7 @@
 	$conf['system_path'] = APP_ROOT.'/system/';
 
 	// Path to app folder, with trailing slash
-	$conf['application_path'] = APP_ROOT.'/app/';
+	$conf['application_path'] = APP_ROOT.'app/';
 
 	// Path to view directory, with trailing slash
 	$conf['view_path'] = $conf['application_path'].'views/';

@@ -285,6 +285,7 @@ class Model extends KISS_Model
 
 	// ------------------------------------------------------------------------
 
+
 	/**
 	 * Create table
 	 * 
@@ -302,17 +303,14 @@ class Model extends KISS_Model
 		{		
 			return TRUE;
 		}
-
 		// Check if table exists and is up-to-date
 		try
 		{
 			$dbh = $this->getdbh();
 		
 			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
-
 			// Check if table exists
 			$this->prepare( "SELECT * FROM ".$this->enquote($this->tablename)." LIMIT 1" );
-
 			// Existing table, is it up-to date?
 			if (conf('allow_migrations'))
         	{
@@ -321,16 +319,13 @@ class Model extends KISS_Model
         			try
         			{
         				require_once(conf('application_path').'helpers/database_helper.php');
-
 	        			migrate($this);
-
 	        			$model_name = get_class($this);
 	        			alert('Migrated '.$model_name.' to version '.$this->schema_version);
         			}
         			catch(Exception $e)
         			{
         				error("Migration error: $this->tablename: ".$e->getMessage());
-
         				// Rollback any open transaction
         				try { $dbh->rollBack(); } catch (Exception $e2) {}
         			}
@@ -341,7 +336,6 @@ class Model extends KISS_Model
 		catch (Exception $e)
 		{
 			// If the prepare fails, the table does not exist.
-
 			// Get columns
 			$columns = array();
 			foreach($this->rs as $name => $val)
@@ -354,8 +348,7 @@ class Model extends KISS_Model
 			}
 			
 			// Set primary key
-			$columns[$this->pkname] = 'SERIAL PRIMARY KEY';
-
+			$columns[$this->pkname] = 'SERIAL PRIMERY KEY';
 			// Table options, override per driver
 			$tbl_options = '';
 			
@@ -370,9 +363,7 @@ class Model extends KISS_Model
 					$tbl_options = conf('mysql_create_tbl_opts');
 					break;
                                 case 'pgsql':
-                                        $columns[$this->pkname] .= ' AUTOINCRIMENT';
                                         break;
-
 			}
 			
 			// Compile columns sql
@@ -382,22 +373,16 @@ class Model extends KISS_Model
 				$sql .= $this->enquote($name) . " $type,";
 			}
 			$sql = rtrim($sql, ',');
-
 			try
 			{
-
 				$dbh->exec(sprintf("CREATE TABLE %s (%s) %s", $this->enquote($this->tablename), $sql, $tbl_options));
-
 				// Set indexes
 				$this->set_indexes();
-
 				// Store schema version in migration table
 				$migration = new Migration($this->tablename);
 				$migration->version = $this->schema_version;
 				$migration->save();
-
 				alert("Created table '$this->tablename' version $this->schema_version");
-
 			}
 			catch (Exception $e)
 			{
@@ -407,14 +392,12 @@ class Model extends KISS_Model
 			}
             
 		}
-
         // Store this table in the instantiated tables array
         $GLOBALS['tables'][$this->tablename] = $this->tablename;
-
         // Create table succeeded
         return TRUE;
 	}
-	
+		
 	// ------------------------------------------------------------------------
 
 	/**
